@@ -4,6 +4,8 @@ import it.schwarz.jobs.review.coupon.domain.entity.ApplicationResult;
 import it.schwarz.jobs.review.coupon.domain.entity.Basket;
 import it.schwarz.jobs.review.coupon.domain.entity.Coupon;
 import it.schwarz.jobs.review.coupon.domain.entity.CouponApplications;
+import it.schwarz.jobs.review.coupon.provider.DuplicateCouponException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,18 +17,21 @@ public class CouponUseCases {
         this.couponProvider = couponProvider;
     }
 
+    @Transactional
     public Coupon createCoupon(Coupon coupon) {
         try {
             return couponProvider.createCoupon(coupon);
-        } catch (IllegalStateException ex) {
+        } catch (DuplicateCouponException ex) {
             throw new CouponAlreadyExistsException(ex.getMessage());
         }
     }
 
+    @Transactional(readOnly = true)
     public List<Coupon> findAllCoupons() {
         return couponProvider.findAll();
     }
 
+    @Transactional(readOnly = true)
     public CouponApplications getApplications(String couponCode) {
         var foundCouponApplications = couponProvider.getCouponApplications(couponCode);
         if (foundCouponApplications.isEmpty()) {
@@ -35,6 +40,7 @@ public class CouponUseCases {
         return foundCouponApplications.get();
     }
 
+    @Transactional
     public ApplicationResult applyCoupon(Basket basket, String couponCode) {
 
         var basketValue = basket.getValue();

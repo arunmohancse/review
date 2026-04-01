@@ -4,7 +4,7 @@ import it.schwarz.jobs.review.coupon.domain.entity.AmountOfMoney;
 import it.schwarz.jobs.review.coupon.domain.entity.Coupon;
 import it.schwarz.jobs.review.coupon.domain.entity.CouponApplications;
 import it.schwarz.jobs.review.coupon.domain.usecase.CouponProvider;
-import org.springframework.transaction.annotation.Transactional;
+import it.schwarz.jobs.review.coupon.provider.DuplicateCouponException;
 
 import java.time.Instant;
 import java.util.List;
@@ -21,10 +21,9 @@ public class JpaCouponProvider implements CouponProvider {
     }
 
     @Override
-    @Transactional
     public Coupon createCoupon(Coupon coupon) {
         if (couponJpaRepository.existsById(coupon.getCode())) {
-            throw new IllegalStateException("Coupon already exists: " + coupon.getCode());
+            throw new DuplicateCouponException("Coupon already exists: " + coupon.getCode());
         }
         var toPersist = domainToJpa(coupon);
         var persisted = couponJpaRepository.save(toPersist);
@@ -69,6 +68,7 @@ public class JpaCouponProvider implements CouponProvider {
                 coupon.getMinBasketValue().toBigDecimal()
         );
     }
+
 
     private Coupon jpaToDomain(CouponJpaEntity couponJpaEntity) {
 
