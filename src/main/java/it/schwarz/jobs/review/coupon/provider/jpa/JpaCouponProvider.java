@@ -5,6 +5,8 @@ import it.schwarz.jobs.review.coupon.domain.entity.Coupon;
 import it.schwarz.jobs.review.coupon.domain.entity.CouponApplications;
 import it.schwarz.jobs.review.coupon.domain.usecase.CouponProvider;
 import it.schwarz.jobs.review.coupon.provider.DuplicateCouponException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.Instant;
 import java.util.List;
@@ -31,10 +33,8 @@ public class JpaCouponProvider implements CouponProvider {
     }
 
     @Override
-    public List<Coupon> findAll() {
-        return couponJpaRepository.findAll().stream()
-                .map(this::jpaToDomain)
-                .toList();
+    public Page<Coupon> findAll(Pageable pageable) {
+        return couponJpaRepository.findAll(pageable).map(this::jpaToDomain);
     }
 
     @Override

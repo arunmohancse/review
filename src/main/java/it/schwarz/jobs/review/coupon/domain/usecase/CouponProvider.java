@@ -2,6 +2,8 @@ package it.schwarz.jobs.review.coupon.domain.usecase;
 
 import it.schwarz.jobs.review.coupon.domain.entity.Coupon;
 import it.schwarz.jobs.review.coupon.domain.entity.CouponApplications;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,7 +11,7 @@ import java.util.Optional;
 public interface CouponProvider {
     Coupon createCoupon(Coupon coupon);
 
-    List<Coupon> findAll();
+    Page<Coupon> findAll(Pageable pageable);
 
     Optional<Coupon> findById(String couponCode);
 

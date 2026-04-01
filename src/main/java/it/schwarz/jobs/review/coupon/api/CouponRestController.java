@@ -3,6 +3,7 @@ package it.schwarz.jobs.review.coupon.api;
 import it.schwarz.jobs.review.coupon.api.dto.*;
 import it.schwarz.jobs.review.coupon.domain.usecase.CouponUseCases;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +21,8 @@ public class CouponRestController {
 
 
     @GetMapping()
-    public ResponseEntity<GetCouponsResponseDto> getCoupons() {
-        var coupons = couponUseCases.findAllCoupons();
+    public ResponseEntity<GetCouponsResponseDto> getCoupons(Pageable pageable) {
+        var coupons = couponUseCases.findAllCoupons(pageable);
 
         // Map from Domain to API
         var response = GetCouponsResponseDto.of(coupons);

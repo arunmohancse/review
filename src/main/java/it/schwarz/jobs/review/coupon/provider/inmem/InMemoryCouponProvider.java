@@ -4,6 +4,9 @@ import it.schwarz.jobs.review.coupon.domain.entity.AmountOfMoney;
 import it.schwarz.jobs.review.coupon.domain.entity.Coupon;
 import it.schwarz.jobs.review.coupon.domain.entity.CouponApplications;
 import it.schwarz.jobs.review.coupon.domain.usecase.CouponProvider;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.time.Instant;
 import java.util.*;
@@ -49,8 +52,19 @@ public class InMemoryCouponProvider implements CouponProvider {
     }
 
     @Override
-    public List<Coupon> findAll() {
-        return coupons.stream().toList();
+    public Page<Coupon> findAll(Pageable pageable) {
+        List<Coupon> allCoupons = coupons.stream().toList();
+
+        int total = allCoupons.size();
+        int pageNumber = pageable.getPageNumber();
+        int pageSize   = pageable.getPageSize();
+        int start = pageNumber * pageSize;
+        int end   = Math.min(start + pageSize, total);
+        List<Coupon> pagedList = allCoupons.subList(start, end);
+        if (start >= total) {
+            pagedList = List.of();
+        }
+        return new PageImpl<>(pagedList, pageable, total);
     }
 
     @Override

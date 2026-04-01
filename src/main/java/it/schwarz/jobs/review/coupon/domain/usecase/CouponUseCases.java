@@ -5,6 +5,8 @@ import it.schwarz.jobs.review.coupon.domain.entity.Basket;
 import it.schwarz.jobs.review.coupon.domain.entity.Coupon;
 import it.schwarz.jobs.review.coupon.domain.entity.CouponApplications;
 import it.schwarz.jobs.review.coupon.provider.DuplicateCouponException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -27,8 +29,8 @@ public class CouponUseCases {
     }
 
     @Transactional(readOnly = true)
-    public List<Coupon> findAllCoupons() {
-        return couponProvider.findAll();
+    public Page<Coupon> findAllCoupons(Pageable pageable) {
+        return couponProvider.findAll(pageable);
     }
 
     @Transactional(readOnly = true)
