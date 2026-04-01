@@ -5,14 +5,18 @@ import it.schwarz.jobs.review.coupon.domain.entity.Coupon;
 import it.schwarz.jobs.review.coupon.domain.entity.CouponApplications;
 import it.schwarz.jobs.review.coupon.domain.usecase.CouponProvider;
 import it.schwarz.jobs.review.coupon.provider.DuplicateCouponException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.Optional;
 
 public class JpaCouponProvider implements CouponProvider {
+
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final CouponJpaRepository couponJpaRepository;
     private final ApplicationJpaRepository applicationRepository;
@@ -29,6 +33,7 @@ public class JpaCouponProvider implements CouponProvider {
         }
         var toPersist = domainToJpa(coupon);
         var persisted = couponJpaRepository.save(toPersist);
+        logger.info("Coupon created: {}", coupon.getCode());
         return jpaToDomain(persisted);
     }
 

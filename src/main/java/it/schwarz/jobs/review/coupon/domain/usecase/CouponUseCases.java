@@ -5,6 +5,8 @@ import it.schwarz.jobs.review.coupon.domain.entity.Basket;
 import it.schwarz.jobs.review.coupon.domain.entity.Coupon;
 import it.schwarz.jobs.review.coupon.domain.entity.CouponApplications;
 import it.schwarz.jobs.review.coupon.provider.DuplicateCouponException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public class CouponUseCases {
+
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final CouponProvider couponProvider;
 
@@ -68,7 +72,7 @@ public class CouponUseCases {
 
         // Register the usage of this coupon
         couponProvider.registerCouponApplication(couponToApply.getCode());
-
+        logger.info("Coupon applied: code={}, basketValue={}", couponCode, basketValue.toBigDecimal());
         // Apply
         return new ApplicationResult(basket, couponToApply);
     }

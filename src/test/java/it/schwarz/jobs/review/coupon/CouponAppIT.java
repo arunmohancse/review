@@ -33,10 +33,10 @@ public class CouponAppIT {
     @Test
     @Order(1)
     void testGetCouponOverview() {
-        GetCouponsResponseDto response = this.restTemplate
-                .getForObject(BASE_URL + port + "/api/coupons", GetCouponsResponseDto.class);
+        PageResponseDto response = this.restTemplate
+                .getForObject(BASE_URL + port + "/api/coupons", PageResponseDto.class);
 
-        assertThat(response.coupons()).hasSize(3);
+        assertThat(response.content()).hasSize(3);
     }
 
     @Test
@@ -49,10 +49,10 @@ public class CouponAppIT {
         assertThat(response.coupon()).isNotNull();
         assertThat(response.coupon().code()).isEqualTo(TestObjects.requests().validCoupon().code());
 
-        GetCouponsResponseDto overviewResponse = this.restTemplate
-                .getForObject(BASE_URL + port + "/api/coupons", GetCouponsResponseDto.class);
+        PageResponseDto<CouponDto> overviewResponse = this.restTemplate
+                .getForObject(BASE_URL + port + "/api/coupons", PageResponseDto.class);
 
-        assertThat(overviewResponse.coupons()).hasSize(4);
+        assertThat(overviewResponse.content()).hasSize(4);
     }
 
 

@@ -4,6 +4,7 @@ import it.schwarz.jobs.review.coupon.domain.entity.AmountOfMoney;
 import it.schwarz.jobs.review.coupon.domain.entity.Coupon;
 import it.schwarz.jobs.review.coupon.domain.entity.CouponApplications;
 import it.schwarz.jobs.review.coupon.domain.usecase.CouponProvider;
+import it.schwarz.jobs.review.coupon.provider.DuplicateCouponException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -44,7 +45,7 @@ public class InMemoryCouponProvider implements CouponProvider {
         // Coupon must not already exist
         var foundCoupon = this.findById(coupon.getCode());
         if (foundCoupon.isPresent()) {
-            throw new IllegalStateException("Coupon already exists: " + coupon.getCode());
+            throw new DuplicateCouponException("Coupon already exists: " + coupon.getCode());
         }
 
         coupons.add(coupon);
