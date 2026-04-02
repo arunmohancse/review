@@ -1,5 +1,6 @@
 package it.schwarz.jobs.review.coupon.api.dto;
 
+import it.schwarz.jobs.review.coupon.domain.entity.Coupon;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -29,4 +30,14 @@ public record CouponDto(
         @NotNull
         @Min(0)
         long applicationCount) {
+
+        public static CouponDto of(Coupon coupon) {
+                return new CouponDto(
+                        coupon.getCode(),
+                        coupon.getDiscount().toBigDecimal(),
+                        coupon.getMinBasketValue().toBigDecimal(),
+                        coupon.getDescription(),
+                        coupon.getApplicationCount()
+                );
+        }
 }

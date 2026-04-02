@@ -3,7 +3,6 @@ package it.schwarz.jobs.review.coupon.api;
 import it.schwarz.jobs.review.coupon.api.dto.*;
 import it.schwarz.jobs.review.coupon.domain.usecase.CouponUseCases;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +25,7 @@ public class CouponRestController {
 
         var coupons = couponUseCases.findAllCoupons(pageable);
 
-        return ResponseEntity.ok(PageResponseDto.of(coupons, coupon -> new CouponDto(
-                coupon.getCode(),
-                coupon.getDiscount().toBigDecimal(),
-                coupon.getMinBasketValue().toBigDecimal(),
-                coupon.getDescription(),
-                coupon.getApplicationCount())));
+        return ResponseEntity.ok(PageResponseDto.of(coupons, CouponDto::of));
     }
 
 
