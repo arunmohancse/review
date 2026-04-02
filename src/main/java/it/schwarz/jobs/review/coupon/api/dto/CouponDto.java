@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 
 public record CouponDto(
         @NotNull
@@ -29,7 +30,11 @@ public record CouponDto(
 
         @NotNull
         @Min(0)
-        long applicationCount) {
+        long applicationCount,
+
+        Instant validFrom,
+
+        Instant validUntil) {
 
         public static CouponDto of(Coupon coupon) {
                 return new CouponDto(
@@ -37,7 +42,9 @@ public record CouponDto(
                         coupon.getDiscount().toBigDecimal(),
                         coupon.getMinBasketValue().toBigDecimal(),
                         coupon.getDescription(),
-                        coupon.getApplicationCount()
+                        coupon.getApplicationCount(),
+                        coupon.getValidFrom(),
+                        coupon.getValidUntil()
                 );
         }
 }

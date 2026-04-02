@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 
 public record CreateCouponRequestDto(
 
@@ -27,14 +28,21 @@ public record CreateCouponRequestDto(
 
         @NotNull
         @Size(min = 1, max = 1000)
-        String description) {
+        String description,
+
+        Instant validFrom,
+
+        Instant validUntil) {
 
     public Coupon toCoupon() {
         return new Coupon(
                 code,
                 AmountOfMoney.of(discount),
                 AmountOfMoney.of(minBasketValue),
-                description
+                description,
+                0,
+                validFrom,
+                validUntil
         );
     }
 }

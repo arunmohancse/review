@@ -4,6 +4,7 @@ package it.schwarz.jobs.review.coupon.provider.jpa;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -19,17 +20,23 @@ public class CouponJpaEntity {
     private BigDecimal minBasketValue;
     @Column(name = "DESCRIPTION", nullable = false, length = 1000)
     private String description;
+    @Column(name = "VALID_FROM", nullable = true)
+    private Instant validFrom;
+    @Column(name = "VALID_UNTIL", nullable = true)
+    private Instant validUntil;
     @OneToMany(mappedBy = "couponCode")
     private List<ApplicationJpaEntity> applications;
 
     public CouponJpaEntity() {
     }
 
-    public CouponJpaEntity(String code, BigDecimal discount, String description, BigDecimal minBasketValue) {
+    public CouponJpaEntity(String code, BigDecimal discount, String description, BigDecimal minBasketValue, Instant validFrom, Instant validUntil) {
         this.code = code;
         this.discount = discount;
         this.description = description;
         this.minBasketValue = minBasketValue;
+        this.validFrom = validFrom;
+        this.validUntil = validUntil;
     }
 
     public String getCode() {
@@ -51,4 +58,8 @@ public class CouponJpaEntity {
     public List<ApplicationJpaEntity> getApplications() {
         return applications;
     }
+
+    public Instant getValidFrom() { return validFrom; }
+
+    public Instant getValidUntil() { return validUntil; }
 }

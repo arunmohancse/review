@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+
 
 public class CouponUseCases {
 
@@ -67,6 +69,16 @@ public class CouponUseCases {
         if (basketValue.isLessThan(couponToApply.getMinBasketValue())) {
             throw new BasketValueTooLowException(
                     "The basket value (" + basketValue.toBigDecimal() + ") must not be less than the min. allowed basket value (" + couponToApply.getMinBasketValue().toBigDecimal() + ").");
+        }
+
+        // Coupon must not be expired
+        var now = Instant.now();
+        if (couponToApply.getValidUntil() != null && now.isAfter(couponToApply.getValidUntil())) {
+            throw new CouponExpiredException("Coupon " + couponCode + " has expired.");
+        }
+
+        if (couponToApply.getValidFrom() != null && now.isBefore(couponToApply.getValidFrom())) {
+            throw new CouponNotYetValidException("Coupon " + couponCode + " is not yet valid.");
         }
 
         // Register the usage of this coupon

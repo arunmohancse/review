@@ -70,7 +70,9 @@ public class JpaCouponProvider implements CouponProvider {
                 coupon.getCode(),
                 coupon.getDiscount().toBigDecimal(),
                 coupon.getDescription(),
-                coupon.getMinBasketValue().toBigDecimal()
+                coupon.getMinBasketValue().toBigDecimal(),
+                coupon.getValidFrom(),
+                coupon.getValidUntil()
         );
     }
 
@@ -82,7 +84,9 @@ public class JpaCouponProvider implements CouponProvider {
                 AmountOfMoney.of(couponJpaEntity.getDiscount()),
                 AmountOfMoney.of(couponJpaEntity.getMinBasketValue()),
                 couponJpaEntity.getDescription(),
-                couponJpaEntity.getApplications() == null ? 0 : couponJpaEntity.getApplications().size()
+                couponJpaEntity.getApplications() == null ? 0 : couponJpaEntity.getApplications().size(),
+                couponJpaEntity.getValidFrom(),
+                couponJpaEntity.getValidUntil()
         );
     }
 
