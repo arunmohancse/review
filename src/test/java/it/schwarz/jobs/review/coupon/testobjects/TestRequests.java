@@ -9,11 +9,11 @@ import java.math.BigDecimal;
 public class TestRequests {
 
     public CreateCouponRequestDto validCoupon() {
-        return new CreateCouponRequestDto("CODE_12_20", new BigDecimal("12.00"), new BigDecimal("20.00"), "12 for 20");
+        return new CreateCouponRequestDto("CODE_12_20", new BigDecimal("12.00"), new BigDecimal("20.00"), "12 for 20",null, null);
     }
 
     public CreateCouponRequestDto invalidCouponOfNegativeDiscount() {
-        return new CreateCouponRequestDto("CODE_12_20", new BigDecimal("-12.00"), new BigDecimal("20.00"), "12 for 20");
+        return new CreateCouponRequestDto("CODE_12_20", new BigDecimal("-12.00"), new BigDecimal("20.00"), "12 for 20", null, null);
     }
 
     public ApplyCouponRequestDto validApplication() {
